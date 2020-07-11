@@ -1,4 +1,4 @@
-class API::V1::ItemsController < ApplicationController
+class Api::V1::ItemsController < ApplicationController
   def index
     render json: Item.all
   end
@@ -15,9 +15,13 @@ class API::V1::ItemsController < ApplicationController
     render json: Item.update(params[:id], item_params )
   end
 
+  def destroy
+    render json: Item.delete(params[:id])
+  end
+
   private
 
   def item_params
-    params.permit(:name, :description, :unit_price, :merchant_id)
+    params.require(:item).permit(:name, :description, :unit_price, :merchant_id)
   end
 end
