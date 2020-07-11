@@ -1,5 +1,5 @@
-desc "loading data into database"
-task initialize: [ 'db:drop', 'db:create', 'db:migrate' ] do
+desc 'loading data into database'
+task initialize: ['db:drop', 'db:create', 'db:migrate'] do
   Rake::Task[:create_customers].invoke
   puts "Created #{Customer.all.length} Customers"
   Rake::Task[:create_merchants].invoke
@@ -12,5 +12,5 @@ task initialize: [ 'db:drop', 'db:create', 'db:migrate' ] do
   puts "Created #{InvoiceItem.all.length} Invoice Items"
   Rake::Task[:create_transactions].invoke
   puts "Created #{Transaction.all.length} Transactions"
-  puts "Successfully created objects"
+  puts 'Successfully created objects'
 end
