@@ -17,6 +17,7 @@ class Api::V1::MerchantsController < ApplicationController
       render json: merchant, adapter: :json, status: 201
     else
       render json: { error: merchant.errors }, status: 422
+    end
   end
 
   def update
