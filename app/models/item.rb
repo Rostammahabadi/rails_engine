@@ -10,8 +10,11 @@ class Item < ApplicationRecord
     elsif params[:unit_price]
       Item.where('unit_price LIKE ?', "%#{parms[:unit_price]}%")
     elsif params[:merchant_id]
-
+      Item.where('merchant_id = ?', params[:merchant_id])
     elsif params[:created_at]
-
+      Item.where('created_at = ?', params[:created_at])
     else
+      Item.where('updated_at = ?', params[:updated_at])
+    end
+  end
 end
