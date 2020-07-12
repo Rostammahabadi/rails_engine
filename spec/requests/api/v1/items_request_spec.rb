@@ -38,7 +38,7 @@ describe "Items API" do
 
     post "/api/v1/items", params: {item: item_params}
     item = Item.last
-
+    
     expect(response).to be_successful
     expect(item.name).to eq(item_params[:name])
   end

@@ -1,22 +1,39 @@
 class Api::V1::ItemsController < ApplicationController
   def index
-    render json: ItemSerializer.new(Item.all)
+    render json: ItemSerializer.new(Item.all).serializable_hash
   end
 
   def show
-    render json: ItemSerializer.new(Item.find(params[:id]))
+    if Item.find(params[:id])
+      render json: ItemSerializer.new(Item.find(params[:id])).serializable_hash
+    else
+      render json: { error: "This Item doesn't exist" }, status: 404
+    end
   end
 
   def create
-    render json: Item.create(item_params)
+    item = Item.new(item_params)
+    if item.save
+      render json: item, adapter: :json, status: 201
+    else
+      render json: { error: item.errors }, status: 422
+    end
   end
 
   def update
-    render json: Item.update(params[:id], item_params )
+    item = Item.find(params[:id])
+    if item.update(item_params)
+      render json: item, adapter: :json, status: 201
+    else
+      render json: { error: item.errors }, status: 422
+    end
   end
 
   def destroy
-    render json: Item.delete(params[:id])
+    if Item.find(params[:id])
+      render json: Item.delete(params[:id])
+    else
+      render json: { error: "This item doesn't exist"}, status: 404
   end
 
   private

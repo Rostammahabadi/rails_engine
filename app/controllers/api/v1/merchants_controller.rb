@@ -1,22 +1,39 @@
 class Api::V1::MerchantsController < ApplicationController
   def index
-    render json: MerchantSerializer.new(Merchant.all)
+    render json: MerchantSerializer.new(Merchant.all).serializable_hash
   end
 
   def show
-    render json: MerchantSerializer.new(Merchant.find(params[:id]))
+    if Merchant.find(params[:id])
+      render json: MerchantSerializer.new(Merchant.find(params[:id]))
+    else
+      render json: { error: "This merchant doesn't exist" }, status: 404
+    end
   end
 
   def create
-    render json: Merchant.create(merchant_params)
+    merchant = Merchant.new(merchant_params)
+    if merchant.save
+      render json: merchant, adapter: :json, status: 201
+    else
+      render json: { error: merchant.errors }, status: 422
   end
 
   def update
-    render json: Merchant.update(params[:id], merchant_params )
+    merchant = Merchant.find(params[:id])
+    if Merchant.update(merchant_params)
+      render json: merchant, adapter: :json, status: 201
+    else
+      render json: { error: merchant.errors }, status: 422
+    end
   end
 
   def destroy
-    render json: Merchant.delete(params[:id])
+    if Merchant.find(params[:id])
+      render json: Merchant.delete(params[:id])
+    else
+      render json: { error: "This merchant doesn't exist" }, status: 404
+    end
   end
 
   private
