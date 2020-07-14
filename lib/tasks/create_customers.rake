@@ -1,6 +1,7 @@
 desc 'it creates all customers'
 task :create_customers do
   require 'csv'
+   ActiveRecord::Base.connection.reset_pk_sequence!('customers')
   CSV.foreach('db/customers.csv', headers: true) do |row|
     Customer.create(
       first_name: row[1],

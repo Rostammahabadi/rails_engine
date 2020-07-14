@@ -1,5 +1,6 @@
 desc 'it creates all transactions'
 task :create_transactions do
+  ActiveRecord::Base.connection.reset_pk_sequence!('transactions')
   require 'csv'
   CSV.foreach('db/transactions.csv', headers: true) do |row|
     Transaction.create(

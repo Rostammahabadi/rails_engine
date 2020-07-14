@@ -1,5 +1,6 @@
 desc 'it creates all invoices'
 task :create_invoices do
+  ActiveRecord::Base.connection.reset_pk_sequence!('invoices')
   require 'csv'
   CSV.foreach('db/invoices.csv', headers: true) do |row|
     Invoice.create(
