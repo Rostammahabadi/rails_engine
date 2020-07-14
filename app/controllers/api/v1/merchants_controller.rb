@@ -14,7 +14,7 @@ class Api::V1::MerchantsController < ApplicationController
   def create
     merchant = Merchant.new(merchant_params)
     if merchant.save
-      render json: merchant, adapter: :json, status: 201
+      render json: MerchantSerializer.new(merchant), adapter: :json, status: 201
     else
       render json: { error: merchant.errors }, status: 422
     end
@@ -22,8 +22,8 @@ class Api::V1::MerchantsController < ApplicationController
 
   def update
     merchant = Merchant.find(params[:id])
-    if Merchant.update(merchant_params)
-      render json: merchant, adapter: :json, status: 201
+    if merchant.update(merchant_params)
+      render json: MerchantSerializer.new(merchant), status: 201
     else
       render json: { error: merchant.errors }, status: 422
     end
@@ -31,7 +31,9 @@ class Api::V1::MerchantsController < ApplicationController
 
   def destroy
     if Merchant.find(params[:id])
-      render json: Merchant.delete(params[:id])
+      merchant = Merchant.find(params[:id])
+      merchant.destroy
+      render json: MerchantSerializer.new(merchant), status: 201
     else
       render json: { error: "This merchant doesn't exist" }, status: 404
     end
@@ -40,6 +42,6 @@ class Api::V1::MerchantsController < ApplicationController
   private
 
   def merchant_params
-    params.require(:merchant).permit(:name)
+    params.permit(:name)
   end
 end
