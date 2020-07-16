@@ -5,8 +5,8 @@ class CreateInvoiceItems < ActiveRecord::Migration[6.0]
       t.references :invoice, null: false, foreign_key: true
       t.integer :quantity
       t.float :unit_price
-      t.datetime :created_at
-      t.datetime :updated_at
+      t.date :created_at
+      t.date :updated_at
     end
   end
 end

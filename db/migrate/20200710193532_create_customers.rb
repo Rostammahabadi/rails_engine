@@ -4,7 +4,7 @@ class CreateCustomers < ActiveRecord::Migration[6.0]
       t.string :first_name
       t.string :last_name
       t.date :created_at
-      t.datetime :updated_at
+      t.date :updated_at
     end
   end
 end
