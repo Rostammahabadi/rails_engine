@@ -3,6 +3,8 @@ class Item < ApplicationRecord
   validates :description, presence: true, on: :create
   validates :unit_price, presence: true, on: :create
   belongs_to :merchant
+  has_many :invoice_items
+  has_many :invoices, through: :invoice_items
 
   def self.find_by_params(params)
     if params[:name]
@@ -16,17 +18,6 @@ class Item < ApplicationRecord
     end
   end
 
-  # def self.find_all_by_params(params)
-  #   params.to_h.each do |key,value|
-  #     if key == 'name' || key == 'description'
-  #       Item.where("lower(#{key.downcase}) LIKE ?" ,"%#{value.downcase}%")
-  #     elsif key == 'created_at' || key == 'updated_at'
-  #       Item.where("#{key} = #{value}")
-  #     else
-  #       Item.where(merchant_id: value)
-  #     end
-  #   end
-  # end
   def self.find_all_by_params(params)
     if params[:name]
       Item.where('lower(name) LIKE ?', "%#{params[:name]}%")
