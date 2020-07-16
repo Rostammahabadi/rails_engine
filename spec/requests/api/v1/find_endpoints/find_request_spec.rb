@@ -8,7 +8,7 @@ describe "User can find a resource" do
 
     expect(response).to be_successful
     merchant_response = JSON.parse(response.body)
-    binding.pry 
+    
     expect(merchant_response.count).to eq(1)
   end
 end
