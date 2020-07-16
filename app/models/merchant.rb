@@ -33,11 +33,10 @@ class Merchant < ApplicationRecord
   end
 
   def self.most_items(params)
-    select('merchants.*, sum(invoice_items.quantity) AS total_quantity').
     joins(invoices: [:transactions, :invoice_items]).
     where(transactions: {result: 'success'}).
     group('merchants.id').
-    order('total_quantity DESC').
+    order('sum(invoice_items.quantity) DESC').
     limit("#{params.to_i}")
   end
 
